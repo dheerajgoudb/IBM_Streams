@@ -1,0 +1,3 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/DataGenerator.so -fPIC -shared $(SODataGenerator) $(SPL_LDFLAGS)\
+	    build/operator/DataGenerator.o \
+	    build/type/BeJwrMco0rMg0K0otLs0pAQAgzAT3.o 

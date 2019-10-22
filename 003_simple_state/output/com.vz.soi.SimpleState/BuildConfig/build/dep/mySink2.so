@@ -1,0 +1,3 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/mySink2.so -fPIC -shared $(SOmySink2) $(SPL_LDFLAGS)\
+	    build/operator/mySink2.o \
+	    build/type/BeJwrMcm0zM3MC0otLs0pATITK2DMxLJ0GLO4NBfCBAClbRJK.o 

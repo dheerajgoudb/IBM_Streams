@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<tupleModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/tuple" class="BeJwrMcm0zM3MC0otLs0pATITK2DMxLJ0GLO4NBfCBAClbRJK" equalitySupported="true" facade="false" splType="tuple&lt;int32 minResult,int32 maxResult,int32 avgResult,int32 sumResult>" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <headers/>
+
+  <attributes>
+    <attribute>
+      <name>minResult</name>
+      <cppType>SPL::int32</cppType>
+      <splType>int32</splType>
+    </attribute>
+    <attribute>
+      <name>maxResult</name>
+      <cppType>SPL::int32</cppType>
+      <splType>int32</splType>
+    </attribute>
+    <attribute>
+      <name>avgResult</name>
+      <cppType>SPL::int32</cppType>
+      <splType>int32</splType>
+    </attribute>
+    <attribute>
+      <name>sumResult</name>
+      <cppType>SPL::int32</cppType>
+      <splType>int32</splType>
+    </attribute>
+  </attributes>
+
+</tupleModel>

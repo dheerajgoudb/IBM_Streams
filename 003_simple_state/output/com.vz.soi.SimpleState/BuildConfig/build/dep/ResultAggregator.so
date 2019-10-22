@@ -1,0 +1,4 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/ResultAggregator.so -fPIC -shared $(SOResultAggregator) -lstreams-stdtk-runtime $(SPL_LDFLAGS)\
+	    build/operator/ResultAggregator.o \
+	    build/type/BeJwrMcm0zM3MC0otLs0pATITK2DMxLJ0GLO4NBfCBAClbRJK.o \
+	    build/type/BeJwrMco0rMg0K0otLs0pAQAgzAT3.o 

@@ -1,0 +1,66 @@
+namespace com.vz.soi ;
+
+composite SimpleState
+{
+	type
+		MyType = int32 x, int32 result ;
+		AggregatedResultType = int32 minResult, int32 maxResult, int32 avgResult, int32 sumResult;
+		
+	graph
+		(stream<MyType> MyData as MD) as DataGenerator = Beacon()
+		{
+			param
+				iterations : 50 ;
+			output
+				MD : x =(int32) IterationCount() + 1 ;
+		}
+		// using MyData in type below can also works... compiler gets from above MyData which is MyTyep
+		(stream<MyType> MyResult as MR) as StateKeeper = Custom(MyData as MD)
+		{
+			logic
+				state :
+				{
+					mutable int32 _previousX = 0 ;
+				}
+
+				onTuple MD :
+				{
+					MD.result = MD.x + _previousX ;
+					submit(MD, MR) ;
+
+					// store the current X in our state variable
+					_previousX = MD.x ;
+				}
+
+		}
+
+		() as MySink1 = FileSink(MyResult)
+		{
+			param
+				file : "/dev/stdout" ;
+				flush : 1u ;
+		}
+
+		(stream<AggregatedResultType> AggResult as AR) as ResultAggregator = Aggregate(MyResult as MR)
+		{
+			window
+			// Different window types that can be used are 
+			// count(x), time(x), delta(attr,x)
+				MR : tumbling, count(12) ;
+				
+			output
+				AR: minResult = Min(result), maxResult = Max(MR.result),
+				avgResult = Average(MR.result), sumResult = Sum(MR.result);
+		}
+
+		() as mySink2 = Custom(AggResult as AR)
+		{
+			logic
+				onTuple AR: {
+					// In streams, we can print anything to the stdout using this function
+					printStringLn("Aggregate result=" + (rstring)AR);
+				}
+		}
+
+}
+

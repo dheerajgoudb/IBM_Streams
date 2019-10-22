@@ -1,0 +1,3 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/StateKeeper.so -fPIC -shared $(SOStateKeeper) $(SPL_LDFLAGS)\
+	    build/operator/StateKeeper.o \
+	    build/type/BeJwrMco0rMg0K0otLs0pAQAgzAT3.o 
