@@ -1,0 +1,3 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/StockSplitter.so -fPIC -shared $(SOStockSplitter) -lstreams-stdtk-runtime $(SPL_LDFLAGS)\
+	    build/operator/StockSplitter.o \
+	    build/type/BeJwrMS42K67MTcrPSTMtKMpMTk2yTCqt9C8KTs3JAQCbbArR.o 

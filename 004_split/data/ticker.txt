@@ -1,0 +1,10 @@
+IBM,180.45,true
+AAL,34.23,false
+GOOG,23.45,true
+MSFT,45.23,true
+CSCO,23.45,false
+T,45.67,true
+INTC,56.23,false
+F,23.45,true
+LUV,12.34,true
+BABA,100.23,true

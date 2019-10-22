@@ -1,0 +1,104 @@
+namespace com.vz.soi ;
+
+composite mySplit
+{
+	type
+		StockTicker_t = rstring symbol, float32 price, boolean buyOrSell;
+		
+
+	graph
+		(stream<StockTicker_t> StockTicker as ST) as TickerGenerator = FileSource()
+		{
+			param
+				// file from the drive shared by Senthil 
+				file: "ticker.txt";
+		}
+
+		(stream<StockTicker_t> Ticker1 ; 
+		 stream<StockTicker_t> Ticker2 ;
+		 stream<StockTicker_t> Ticker3 ;
+		 stream<StockTicker_t> Ticker4 ;
+		 stream<StockTicker_t> Ticker5 ;
+		 stream<StockTicker_t> Ticker6 ;
+		 stream<StockTicker_t> Ticker7 ;
+		 stream<StockTicker_t> Ticker8 ;
+		 stream<StockTicker_t> Ticker9 ;
+		 stream<StockTicker_t> Ticker10 ) as StockSplitter = Split(StockTicker as ST)
+		{
+			param
+				file: "split-rules.txt";
+				key: ST.symbol;
+		}
+
+		() as MySink1 = FileSink(Ticker1)
+		{
+			param
+				file : "ticker-result-1.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink2 = FileSink(Ticker2)
+		{
+			param
+				file : "ticker-result-2.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink3 = FileSink(Ticker3)
+		{
+			param
+				file : "ticker-result-3.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink4 = FileSink(Ticker4)
+		{
+			param
+				file : "ticker-result-4.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink5 = FileSink(Ticker5)
+		{
+			param
+				file : "ticker-result-5.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink6 = FileSink(Ticker6)
+		{
+			param
+				file : "ticker-result-6.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink7 = FileSink(Ticker7)
+		{
+			param
+				file : "ticker-result-7.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink8 = FileSink(Ticker8)
+		{
+			param
+				file : "ticker-result-8.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink9 = FileSink(Ticker9)
+		{
+			param
+				file : "ticker-result-9.txt" ;
+				flush: 1u;
+		}
+
+		() as MySink10 = FileSink(Ticker10)
+		{
+			param
+				file : "ticker-result-10.txt" ;
+				flush: 1u;
+		}
+
+}
+

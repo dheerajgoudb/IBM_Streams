@@ -1,0 +1,11 @@
+default,-1
+"IBM", 0
+"AAL", 1
+"GOOG", 2, 5, 7
+"MSFT", 3
+"CSCO", 4
+"T", 5
+"INTC", 6
+"F", 7
+"LUV", 8
+"BABA", 9

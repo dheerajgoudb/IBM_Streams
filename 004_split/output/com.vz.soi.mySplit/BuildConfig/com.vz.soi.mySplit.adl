@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application/v4200" name="com.vz.soi::mySplit.appset" xmlns:tt="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <description>com.vz.soi::mySplit application set</description>
+
+  <splApplication adlPath="BuildConfig/com.vz.soi.mySplit.adl" applicationDirectory="toolkits/004_split" applicationScope="Default" avoidRuntimeYield="auto" buildId="" bundle="./com.vz.soi.mySplit.sab" checkpointDirectory="/home/streamsadmin/soi/004_split/data/ckpt" dataDirectory="/home/streamsadmin/soi/004_split/data" name="com.vz.soi::mySplit" outputDirectory="BuildConfig" productVersion="4.2.1.1" standaloneApplicationDirectory="toolkits/004_split" version="1.0.0">
+    <libraries/>
+    <hostpools>
+      <hostpool index="0" membershipMode="shared" name="$default"/>
+    </hostpools>
+    <tupleTypes>
+      <tupleType index="0">
+        <attribute name="symbol" type="rstring"/>
+        <attribute name="price" type="float32"/>
+        <attribute name="buyOrSell" type="boolean"/>
+        <tuple>
+          <tt:attr name="symbol" type="rstring"/>
+          <tt:attr name="price" type="float32"/>
+          <tt:attr name="buyOrSell" type="boolean"/>
+        </tuple>
+      </tupleType>
+    </tupleTypes>
+    <primitiveOperDefinitions>
+      <primitiveOperDefinition index="0" kind="spl.adapter::FileSource" runtimeType="SPL_CPlusPlus" toolkitIndex="1">
+        <customMetricIndicies>
+          <customMetricIndex>0</customMetricIndex>
+          <customMetricIndex>1</customMetricIndex>
+        </customMetricIndicies>
+      </primitiveOperDefinition>
+      <primitiveOperDefinition index="1" kind="spl.utility::Split" runtimeType="SPL_CPlusPlus" toolkitIndex="1"/>
+      <primitiveOperDefinition index="2" kind="spl.adapter::FileSink" runtimeType="SPL_CPlusPlus" toolkitIndex="1">
+        <customMetricIndicies>
+          <customMetricIndex>2</customMetricIndex>
+          <customMetricIndex>3</customMetricIndex>
+        </customMetricIndicies>
+      </primitiveOperDefinition>
+    </primitiveOperDefinitions>
+    <composites>
+      <sourceUris>
+        <uri index="0" path="file:///home/streamsadmin/soi/004_split/com.vz.soi/mySplit.spl"/>
+      </sourceUris>
+      <compositeOperDefinitions>
+        <compositeOperDefinition endLine="103" index="0" kind="com.vz.soi::mySplit" numberOfInputPorts="0" numberOfOutputPorts="0" sourceIndex="0" startLine="3" toolkitIndex="0">
+          <description>com.vz.soi::mySplit Composite</description>
+        </compositeOperDefinition>
+      </compositeOperDefinitions>
+      <compositeOperInstances>
+        <compositeOperInstance definitionIndex="0" endLine="103" index="12" name="com.vz.soi::mySplit" sourceIndex="0" startLine="3">
+          <primitiveOperInstance definitionIndex="0" endLine="15" index="0" name="TickerGenerator" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="10">
+            <outputPorts>
+              <port encoding="LE" index="0" isMutable="true" name="ST" streamName="StockTicker" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+            </outputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker.txt&quot;"/>
+            </runtimeConstants>
+            <sharedObject class="TickerGenerator">
+              <wrapper>none</wrapper>
+              <uri>bin/TickerGenerator.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="1" endLine="31" index="1" name="StockSplitter" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="17">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="ST" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="0" operName="TickerGenerator" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <outputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker1" streamName="Ticker1" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="2" operName="MySink1" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="1" isMutable="false" name="Ticker2" streamName="Ticker2" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="3" operName="MySink2" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="2" isMutable="false" name="Ticker3" streamName="Ticker3" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="4" operName="MySink3" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="3" isMutable="false" name="Ticker4" streamName="Ticker4" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="5" operName="MySink4" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="4" isMutable="false" name="Ticker5" streamName="Ticker5" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="6" operName="MySink5" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="5" isMutable="false" name="Ticker6" streamName="Ticker6" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="7" operName="MySink6" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="6" isMutable="false" name="Ticker7" streamName="Ticker7" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="8" operName="MySink7" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="7" isMutable="false" name="Ticker8" streamName="Ticker8" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="9" operName="MySink8" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="8" isMutable="false" name="Ticker9" streamName="Ticker9" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="10" operName="MySink9" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+              <port encoding="LE" index="9" isMutable="false" name="Ticker10" streamName="Ticker10" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="11" operName="MySink10" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+            </outputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;split-rules.txt&quot;"/>
+            </runtimeConstants>
+            <sharedObject class="StockSplitter">
+              <wrapper>none</wrapper>
+              <uri>bin/StockSplitter.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="38" index="2" name="MySink1" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="33">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker1" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-1.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="45" index="3" name="MySink2" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="40">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker2" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="1" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-2.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="52" index="4" name="MySink3" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="47">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker3" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="2" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-3.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="59" index="5" name="MySink4" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="54">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker4" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="3" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-4.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="66" index="6" name="MySink5" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="61">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker5" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="4" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-5.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="73" index="7" name="MySink6" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="68">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker6" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="5" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-6.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="80" index="8" name="MySink7" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="75">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker7" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="6" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-7.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="87" index="9" name="MySink8" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="82">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker8" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="7" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-8.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="94" index="10" name="MySink9" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="89">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker9" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="8" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-9.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="101" index="11" name="MySink10" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="96">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Ticker10" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="StockSplitter" portIndex="9" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;ticker-result-10.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+        </compositeOperInstance>
+      </compositeOperInstances>
+    </composites>
+    <toolkits>
+      <toolkit index="0" name="004_split" uri="file:///home/streamsadmin/soi/004_split" version="1.0.0"/>
+      <toolkit index="1" name="spl" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/spl" version="1.3.0"/>
+      <toolkit index="2" name="com.ibm.streams.cep" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.cep" version="2.1.0"/>
+      <toolkit index="3" name="com.ibm.streams.cybersecurity" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.cybersecurity" version="2.1.0"/>
+      <toolkit index="4" name="com.ibm.streams.dataexplorer" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.dataexplorer" version="2.1.0"/>
+      <toolkit index="5" name="com.ibm.streams.db" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.db" version="2.1.0"/>
+      <toolkit index="6" name="com.ibm.streams.financial" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.financial" version="2.1.0"/>
+      <toolkit index="7" name="com.ibm.streams.geospatial" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.geospatial" version="3.1.0"/>
+      <toolkit index="8" name="com.ibm.streams.mining" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.mining" version="2.1.0"/>
+      <toolkit index="9" name="com.ibm.streams.rproject" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.rproject" version="2.1.0"/>
+      <toolkit index="10" name="com.ibm.streams.rules" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.rules" version="2.1.0"/>
+      <toolkit index="11" name="com.ibm.streams.rulescompiler" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.rulescompiler" version="1.1.0"/>
+      <toolkit index="12" name="com.ibm.streams.teda" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.teda" version="2.1.0"/>
+      <toolkit index="13" name="com.ibm.streams.text" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.text" version="2.3.0"/>
+      <toolkit index="14" name="com.ibm.streams.timeseries" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.timeseries" version="4.0.1"/>
+      <toolkit index="15" name="com.ibm.streamsx.datetime" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.datetime" version="1.1.2"/>
+      <toolkit index="16" name="com.ibm.streamsx.dps" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.dps" version="3.1.0"/>
+      <toolkit index="17" name="com.ibm.streamsx.hbase" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.hbase" version="2.2.0"/>
+      <toolkit index="18" name="com.ibm.streamsx.hdfs" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.hdfs" version="3.1.0"/>
+      <toolkit index="19" name="com.ibm.streamsx.inet" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.inet" version="2.1.0"/>
+      <toolkit index="20" name="com.ibm.streamsx.iot" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.iot" version="1.1.0.commit_67acf7a"/>
+      <toolkit index="21" name="com.ibm.streamsx.jdbc" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.jdbc" version="1.1.0"/>
+      <toolkit index="22" name="com.ibm.streamsx.json" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.json" version="1.3.0"/>
+      <toolkit index="23" name="com.ibm.streamsx.messaging" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.messaging" version="5.3.0"/>
+      <toolkit index="24" name="com.ibm.streamsx.network" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.network" version="3.0.5"/>
+      <toolkit index="25" name="com.ibm.streamsx.sparkmllib" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.sparkmllib" version="1.1.0"/>
+      <toolkit index="26" name="com.ibm.streamsx.topology" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.topology" version="1.6.0"/>
+    </toolkits>
+    <customMetrics>
+      <customMetric index="0" kind="Counter" name="nFilesOpened">
+        <description>The number of files opened by the `FileSource` operator.</description>
+      </customMetric>
+      <customMetric index="1" kind="Counter" name="nInvalidTuples">
+        <description>The number of tuples that failed to read correctly in csv or txt format.</description>
+      </customMetric>
+      <customMetric index="2" kind="Counter" name="nFilesOpened">
+        <description>The number of files opened by the `FileSink` operator.</description>
+      </customMetric>
+      <customMetric index="3" kind="Counter" name="nTupleWriteErrors">
+        <description>
+ The number of tuple writes that had an error on the file stream after the write completed. 
+Due to buffering, write failures might not be detected immediately. 
+You can use `param flush : 1u;` to ensure quicker detection, but with a (possibly large) performance penalty. 
+After a failure is detected, all future writes fail unless the error condition is cleared or the file is closed. 
+
+For more information, see the **writeFailureAction** parameter.
+</description>
+      </customMetric>
+    </customMetrics>
+  </splApplication>
+
+</applicationSet>

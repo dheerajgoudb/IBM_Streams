@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<tupleModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/tuple" class="BeJwrMS42K67MTcrPSTMtKMpMTk2yTCqt9C8KTs3JAQCbbArR" equalitySupported="true" facade="false" splType="tuple&lt;rstring symbol,float32 price,boolean buyOrSell>" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <headers/>
+
+  <attributes>
+    <attribute>
+      <name>symbol</name>
+      <cppType>SPL::rstring</cppType>
+      <splType>rstring</splType>
+    </attribute>
+    <attribute>
+      <name>price</name>
+      <cppType>SPL::float32</cppType>
+      <splType>float32</splType>
+    </attribute>
+    <attribute>
+      <name>buyOrSell</name>
+      <cppType>SPL::boolean</cppType>
+      <splType>boolean</splType>
+    </attribute>
+  </attributes>
+
+</tupleModel>
