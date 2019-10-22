@@ -1,0 +1,4 @@
+"peter",47,"Account Manager","male",47000
+"john",62,"Retired Engineer","male",62000
+"sam",50,"Account Manager","male",50000
+"john",62,"Retired Engineer","male",62000

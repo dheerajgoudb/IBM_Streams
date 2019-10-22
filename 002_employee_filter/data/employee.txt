@@ -1,0 +1,14 @@
+joe,24,SW Engineer,male
+mary,25,Production Manager,female
+kunal,18,VP,male
+joe,24,SW Engineer,male
+mary,25,Production Manager,female
+peter,47,Account Manager,male
+kris,26,Chemist,female
+john,62,Retired Engineer,male
+joe,24,SW Engineer,male
+mary,25,Production Manager,female
+sam,50,Account Manager,male
+kris,26,Chemist,female
+john,62,Retired Engineer,male
+joe,24,SW Engineer,male

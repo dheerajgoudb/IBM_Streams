@@ -1,0 +1,3 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/FilteredEmployee.so -fPIC -shared $(SOFilteredEmployee) $(SPL_LDFLAGS)\
+	    build/operator/FilteredEmployee.o \
+	    build/type/BeJwrMSk2yUvMTfUyTkxPLTYtySzJSS02S0_1NS0ktAgCUCwqD.o 

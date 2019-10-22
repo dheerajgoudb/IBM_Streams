@@ -1,0 +1,4 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/CustomBonusCalculator.so -fPIC -shared $(SOCustomBonusCalculator) $(SPL_LDFLAGS)\
+	    build/operator/CustomBonusCalculator.o \
+	    build/type/BeJwrMSk2yUvMTfUyTkxPLTYtySzJSS02S0_1NS0ktAgCUCwqD.o \
+	    build/type/BeJwrMS02yUvMTfUyTkxPLTYtySzJSS02S0_1NS0ktcjNNys8rLQYA5zcNAm.o 

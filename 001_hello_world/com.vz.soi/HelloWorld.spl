@@ -1,0 +1,40 @@
+namespace com.vz.soi ;
+
+composite HelloWorld
+{
+	param
+	// you can use param to decide constants, pass command line args, etc.
+		expression<int32> $ITERATION_CNT :(int32)
+			getSubmissionTimeValue("IterationsCnt", "500") ;
+		expression<float64> $PERIOD :(float64) getSubmissionTimeValue("Period") ;
+		expression<rstring> $FILE_NAME : getSubmissionTimeValue("FileName") ;
+	graph
+		(stream<int32 cnt, rstring msg> Greeting) = Beacon()
+		{
+			param
+				iterations : $ITERATION_CNT ;
+				period : $PERIOD ; // 156 milliseconds wait between tuples.
+
+				// output clause to customize what goes in the output tuple
+
+			output
+				Greeting : cnt =(int32) IterationCount() + 1, msg = "Hello World" ;
+		}
+
+		() as MySink1 = FileSink(Greeting)
+		{
+			param
+				file : "/dev/stdout" ;
+				flush :(uint32) 1 ; // Suffix: u -> unsigned, w -> word, l -> long, b -> byte
+
+		}
+
+		() as MySink2 = FileSink(Greeting)
+		{
+			param
+				file : $FILE_NAME ;
+				flush : 1u ;
+		}
+
+}
+

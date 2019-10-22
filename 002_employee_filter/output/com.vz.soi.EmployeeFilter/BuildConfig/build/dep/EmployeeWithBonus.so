@@ -1,0 +1,4 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/EmployeeWithBonus.so -fPIC -shared $(SOEmployeeWithBonus) $(SPL_LDFLAGS)\
+	    build/operator/EmployeeWithBonus.o \
+	    build/type/BeJwrMSk2yUvMTfUyTkxPLTYtySzJSS02S0_1NS0ktAgCUCwqD.o \
+	    build/type/BeJwrMS02yUvMTfUyTkxPLTYtySzJSS02S0_1NS0ktcjNNys8rLQYA5zcNAm.o 

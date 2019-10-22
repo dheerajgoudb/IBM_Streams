@@ -1,0 +1,14 @@
+"joe",24,"SW Engineer","male",240
+"mary",25,"Production Manager","female",156000.89
+"kunal",18,"VP","male",180
+"joe",24,"SW Engineer","male",240
+"mary",25,"Production Manager","female",156000.89
+"peter",47,"Account Manager","male",0
+"kris",26,"Chemist","female",156000.89
+"john",62,"Retired Engineer","male",0
+"joe",24,"SW Engineer","male",240
+"mary",25,"Production Manager","female",156000.89
+"sam",50,"Account Manager","male",0
+"kris",26,"Chemist","female",156000.89
+"john",62,"Retired Engineer","male",0
+"joe",24,"SW Engineer","male",240

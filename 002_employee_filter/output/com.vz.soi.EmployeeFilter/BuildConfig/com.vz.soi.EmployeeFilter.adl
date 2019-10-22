@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application/v4200" name="com.vz.soi::EmployeeFilter.appset" xmlns:tt="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <description>com.vz.soi::EmployeeFilter application set</description>
+
+  <splApplication adlPath="BuildConfig/com.vz.soi.EmployeeFilter.adl" applicationDirectory="toolkits/002_employee_filter" applicationScope="Default" avoidRuntimeYield="auto" buildId="" bundle="./com.vz.soi.EmployeeFilter.sab" checkpointDirectory="/home/streamsadmin/soi/002_employee_filter/data/ckpt" dataDirectory="/home/streamsadmin/soi/002_employee_filter/data" name="com.vz.soi::EmployeeFilter" outputDirectory="BuildConfig" productVersion="4.2.1.1" standaloneApplicationDirectory="toolkits/002_employee_filter" version="1.0.0">
+    <libraries/>
+    <hostpools>
+      <hostpool index="0" membershipMode="shared" name="$default"/>
+    </hostpools>
+    <tupleTypes>
+      <tupleType index="0">
+        <attribute name="name" type="rstring"/>
+        <attribute name="age" type="uint8"/>
+        <attribute name="title" type="rstring"/>
+        <attribute name="gender" type="rstring"/>
+        <tuple>
+          <tt:attr name="name" type="rstring"/>
+          <tt:attr name="age" type="uint8"/>
+          <tt:attr name="title" type="rstring"/>
+          <tt:attr name="gender" type="rstring"/>
+        </tuple>
+      </tupleType>
+      <tupleType index="1">
+        <attribute name="name" type="rstring"/>
+        <attribute name="age" type="uint8"/>
+        <attribute name="title" type="rstring"/>
+        <attribute name="gender" type="rstring"/>
+        <attribute name="bonus" type="float64"/>
+        <tuple>
+          <tt:attr name="name" type="rstring"/>
+          <tt:attr name="age" type="uint8"/>
+          <tt:attr name="title" type="rstring"/>
+          <tt:attr name="gender" type="rstring"/>
+          <tt:attr name="bonus" type="float64"/>
+        </tuple>
+      </tupleType>
+    </tupleTypes>
+    <primitiveOperDefinitions>
+      <primitiveOperDefinition index="0" kind="spl.adapter::FileSource" runtimeType="SPL_CPlusPlus" toolkitIndex="1">
+        <customMetricIndicies>
+          <customMetricIndex>0</customMetricIndex>
+          <customMetricIndex>1</customMetricIndex>
+        </customMetricIndicies>
+      </primitiveOperDefinition>
+      <primitiveOperDefinition index="1" kind="spl.relational::Filter" runtimeType="SPL_CPlusPlus" toolkitIndex="1"/>
+      <primitiveOperDefinition index="2" kind="spl.adapter::FileSink" runtimeType="SPL_CPlusPlus" toolkitIndex="1">
+        <customMetricIndicies>
+          <customMetricIndex>2</customMetricIndex>
+          <customMetricIndex>3</customMetricIndex>
+        </customMetricIndicies>
+      </primitiveOperDefinition>
+      <primitiveOperDefinition index="3" kind="spl.relational::Functor" runtimeType="SPL_CPlusPlus" toolkitIndex="1"/>
+      <primitiveOperDefinition index="4" kind="spl.utility::Custom" runtimeType="SPL_CPlusPlus" toolkitIndex="1"/>
+    </primitiveOperDefinitions>
+    <composites>
+      <sourceUris>
+        <uri index="0" path="file:///home/streamsadmin/soi/002_employee_filter/com.vz.soi/EmployeeFilter.spl"/>
+      </sourceUris>
+      <compositeOperDefinitions>
+        <compositeOperDefinition endLine="88" index="0" kind="com.vz.soi::EmployeeFilter" numberOfInputPorts="0" numberOfOutputPorts="0" sourceIndex="0" startLine="3" toolkitIndex="0">
+          <description>com.vz.soi::EmployeeFilter Composite</description>
+        </compositeOperDefinition>
+      </compositeOperDefinitions>
+      <compositeOperInstances>
+        <compositeOperInstance definitionIndex="0" endLine="88" index="7" name="com.vz.soi::EmployeeFilter" sourceIndex="0" startLine="3">
+          <primitiveOperInstance definitionIndex="0" endLine="17" index="0" name="Employee" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="12">
+            <outputPorts>
+              <port encoding="LE" index="0" isMutable="true" name="Employee" streamName="Employee" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="1" operName="FilteredEmployee" portIndex="0" portKind="input"/>
+                  <connection operIndex="3" operName="EmployeeWithBonus" portIndex="0" portKind="input"/>
+                  <connection operIndex="5" operName="CustomBonusCalculator" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+            </outputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;employee.txt&quot;"/>
+            </runtimeConstants>
+            <sharedObject class="Employee">
+              <wrapper>none</wrapper>
+              <uri>bin/Employee.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="1" endLine="23" index="1" name="FilteredEmployee" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="19">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="E" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="0" operName="Employee" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <outputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="FE" streamName="FilteredEmployee" transport="TCP" tupleTypeIndex="0" viewable="true">
+                <connections>
+                  <connection operIndex="2" operName="MySink1" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+            </outputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="25"/>
+              <runtimeConstant name="lit$1" value="&quot;female&quot;"/>
+            </runtimeConstants>
+            <sharedObject class="FilteredEmployee">
+              <wrapper>none</wrapper>
+              <uri>bin/FilteredEmployee.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="30" index="2" name="MySink1" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="25">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="FilteredEmployee" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="1" operName="FilteredEmployee" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;filtered-employee.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink1">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink1.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="3" endLine="40" index="3" name="EmployeeWithBonus" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="32">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="Employee" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="0" operName="Employee" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <outputPorts>
+              <port encoding="LE" index="0" isMutable="true" name="EWB" streamName="EmployeeWithBonus" transport="TCP" tupleTypeIndex="1" viewable="true">
+                <connections>
+                  <connection operIndex="4" operName="MySink2" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+            </outputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="30"/>
+              <runtimeConstant name="lit$1" value="&quot;male&quot;"/>
+              <runtimeConstant name="lit$2" value="1000"/>
+            </runtimeConstants>
+            <sharedObject class="EmployeeWithBonus">
+              <wrapper>none</wrapper>
+              <uri>bin/EmployeeWithBonus.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="47" index="4" name="MySink2" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="42">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="EmployeeWithBonus" transport="TCP" tupleTypeIndex="1">
+                <connections>
+                  <connection operIndex="3" operName="EmployeeWithBonus" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;employee-with-bonus.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink2">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink2.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="4" endLine="79" index="5" name="CustomBonusCalculator" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="49">
+            <splAnnotation internal="true" tag="logicClause">
+              <value key="hasState" type="boolean">false</value>
+              <value key="hasOnProcess" type="boolean">false</value>
+              <value key="hasOnTuple" type="boolean">true</value>
+              <value key="hasOnPunct" type="boolean">false</value>
+            </splAnnotation>
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="true" name="E" transport="TCP" tupleTypeIndex="0">
+                <connections>
+                  <connection operIndex="0" operName="Employee" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <outputPorts>
+              <port encoding="LE" index="0" isMutable="true" name="CB" streamName="CustomizedBonus" transport="TCP" tupleTypeIndex="1" viewable="true">
+                <connections>
+                  <connection operIndex="6" operName="MySink3" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+            </outputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;female&quot;"/>
+              <runtimeConstant name="lit$1" value="156000.89"/>
+              <runtimeConstant name="lit$2" value="30"/>
+              <runtimeConstant name="lit$3" value="&quot;male&quot;"/>
+              <runtimeConstant name="lit$4" value="10"/>
+              <runtimeConstant name="lit$5" value="0"/>
+              <runtimeConstant name="lit$6" value="0"/>
+            </runtimeConstants>
+            <sharedObject class="CustomBonusCalculator">
+              <wrapper>none</wrapper>
+              <uri>bin/CustomBonusCalculator.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+          <primitiveOperInstance definitionIndex="2" endLine="86" index="6" name="MySink3" optimized="true" relocatable="true" restartable="true" singleThreadedOnOutputs="true" sourceIndex="0" startLine="81">
+            <inputPorts>
+              <port encoding="LE" index="0" isMutable="false" name="CustomizedBonus" transport="TCP" tupleTypeIndex="1">
+                <connections>
+                  <connection operIndex="5" operName="CustomBonusCalculator" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+            <envVars/>
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;customized-bonus.txt&quot;"/>
+              <runtimeConstant name="lit$1" value="1"/>
+            </runtimeConstants>
+            <sharedObject class="MySink2">
+              <wrapper>none</wrapper>
+              <uri>bin/MySink2.so</uri>
+            </sharedObject>
+            <tracing level="error"/>
+          </primitiveOperInstance>
+        </compositeOperInstance>
+      </compositeOperInstances>
+    </composites>
+    <toolkits>
+      <toolkit index="0" name="002_employee_filter" uri="file:///home/streamsadmin/soi/002_employee_filter" version="1.0.0"/>
+      <toolkit index="1" name="spl" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/spl" version="1.3.0"/>
+      <toolkit index="2" name="com.ibm.streams.cep" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.cep" version="2.1.0"/>
+      <toolkit index="3" name="com.ibm.streams.cybersecurity" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.cybersecurity" version="2.1.0"/>
+      <toolkit index="4" name="com.ibm.streams.dataexplorer" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.dataexplorer" version="2.1.0"/>
+      <toolkit index="5" name="com.ibm.streams.db" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.db" version="2.1.0"/>
+      <toolkit index="6" name="com.ibm.streams.financial" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.financial" version="2.1.0"/>
+      <toolkit index="7" name="com.ibm.streams.geospatial" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.geospatial" version="3.1.0"/>
+      <toolkit index="8" name="com.ibm.streams.mining" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.mining" version="2.1.0"/>
+      <toolkit index="9" name="com.ibm.streams.rproject" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.rproject" version="2.1.0"/>
+      <toolkit index="10" name="com.ibm.streams.rules" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.rules" version="2.1.0"/>
+      <toolkit index="11" name="com.ibm.streams.rulescompiler" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.rulescompiler" version="1.1.0"/>
+      <toolkit index="12" name="com.ibm.streams.teda" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.teda" version="2.1.0"/>
+      <toolkit index="13" name="com.ibm.streams.text" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.text" version="2.3.0"/>
+      <toolkit index="14" name="com.ibm.streams.timeseries" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streams.timeseries" version="4.0.1"/>
+      <toolkit index="15" name="com.ibm.streamsx.datetime" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.datetime" version="1.1.2"/>
+      <toolkit index="16" name="com.ibm.streamsx.dps" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.dps" version="3.1.0"/>
+      <toolkit index="17" name="com.ibm.streamsx.hbase" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.hbase" version="2.2.0"/>
+      <toolkit index="18" name="com.ibm.streamsx.hdfs" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.hdfs" version="3.1.0"/>
+      <toolkit index="19" name="com.ibm.streamsx.inet" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.inet" version="2.1.0"/>
+      <toolkit index="20" name="com.ibm.streamsx.iot" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.iot" version="1.1.0.commit_67acf7a"/>
+      <toolkit index="21" name="com.ibm.streamsx.jdbc" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.jdbc" version="1.1.0"/>
+      <toolkit index="22" name="com.ibm.streamsx.json" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.json" version="1.3.0"/>
+      <toolkit index="23" name="com.ibm.streamsx.messaging" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.messaging" version="5.3.0"/>
+      <toolkit index="24" name="com.ibm.streamsx.network" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.network" version="3.0.5"/>
+      <toolkit index="25" name="com.ibm.streamsx.sparkmllib" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.sparkmllib" version="1.1.0"/>
+      <toolkit index="26" name="com.ibm.streamsx.topology" uri="file:///opt/ibm/InfoSphere_Streams/4.2.1.1/toolkits/com.ibm.streamsx.topology" version="1.6.0"/>
+    </toolkits>
+    <customMetrics>
+      <customMetric index="0" kind="Counter" name="nFilesOpened">
+        <description>The number of files opened by the `FileSource` operator.</description>
+      </customMetric>
+      <customMetric index="1" kind="Counter" name="nInvalidTuples">
+        <description>The number of tuples that failed to read correctly in csv or txt format.</description>
+      </customMetric>
+      <customMetric index="2" kind="Counter" name="nFilesOpened">
+        <description>The number of files opened by the `FileSink` operator.</description>
+      </customMetric>
+      <customMetric index="3" kind="Counter" name="nTupleWriteErrors">
+        <description>
+ The number of tuple writes that had an error on the file stream after the write completed. 
+Due to buffering, write failures might not be detected immediately. 
+You can use `param flush : 1u;` to ensure quicker detection, but with a (possibly large) performance penalty. 
+After a failure is detected, all future writes fail unless the error condition is cleared or the file is closed. 
+
+For more information, see the **writeFailureAction** parameter.
+</description>
+      </customMetric>
+    </customMetrics>
+  </splApplication>
+
+</applicationSet>

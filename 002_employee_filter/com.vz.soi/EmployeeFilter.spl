@@ -1,0 +1,89 @@
+namespace com.vz.soi ;
+
+composite EmployeeFilter
+{
+	type
+	// you can declare your stream schema in this section
+		Employee_t = rstring name, uint8 age, rstring title, rstring gender ;
+		// use tuple extension to reuse an existing schema/type.
+		EmployeeWithBonus_t = Employee_t, tuple<float64 bonus> ;
+	graph
+	// Content for employee.txt: https://pastebin.com/1aqt8fux
+		(stream<Employee_t> Employee) = FileSource()
+		{
+			param
+				file : "employee.txt" ;
+				format : csv ;
+		}
+
+		(stream<Employee> FilteredEmployee as FE) = Filter(Employee as E)
+		{
+			param
+				filter : E.gender == "female" && E.age <=(uint8) 25 ;
+		}
+
+		() as MySink1 = FileSink(FilteredEmployee)
+		{
+			param
+				file : "filtered-employee.txt" ;
+				flush : 1u ;
+		}
+
+		(stream<EmployeeWithBonus_t> EmployeeWithBonus as EWB) = Functor(Employee)
+		{
+			param
+				filter : gender == "male" && age >= 30ub ;
+				// functor does auto assignment of all the matching attributes from incoming and outgoing tuple.
+
+			output
+				EWB : bonus =(float64) Employee.age * 1000.00 ;
+		}
+
+		() as MySink2 = FileSink(EmployeeWithBonus)
+		{
+			param
+				file : "employee-with-bonus.txt" ;
+				flush : 1u ;
+		}
+
+		(stream<EmployeeWithBonus_t> CustomizedBonus as CB) as CustomBonusCalculator = Custom(Employee as E)
+		{
+			logic
+				onTuple E :
+				{
+					// you must always do this check for custom operator
+					// 1. Check incoming and outgoing streams share the same schema
+					// 2. If the same schema for the both incoming and outgoing streams, then
+					//	you can directly modify the incoming tuple and send it out.
+					// 3. if the schema is different, then you must do the following:
+					//		a. Create a mutable variable for your outgoing tuple.
+					//		b. Copy all the matching attributes from incoming to outgoing yuple.
+					//		c. Perform your custom logic.
+					//		d. You must submit outgoing tuple.
+					mutable EmployeeWithBonus_t oTuple = {};   // default, it will be immutable
+					assignFrom(oTuple,E);  // copies all the matching attributes from right-hand-side to left-hand-side.
+					
+					// Perform your custom logic.
+					if (E.gender == "female") {
+						oTuple.bonus = 156000.89;
+					} else if (gender == "male" && age <= 30ub) {
+						oTuple.bonus = (float64)age * 10.0;
+					} else {
+						oTuple.bonus = 0.0;
+					}
+					
+					// must send your tuple out on your own in a Custom Operator
+					submit(oTuple, CB);
+				}
+
+		}
+
+		() as MySink3 = FileSink(CustomizedBonus)
+		{
+			param
+				file : "customized-bonus.txt" ;
+				flush: 1u;
+		}
+
+}
+
